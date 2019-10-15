@@ -28,13 +28,15 @@ use std::ptr::copy_nonoverlapping;
 
 use hex_fmt::HexFmt;
 use log::debug;
-use pairing::{CurveAffine, CurveProjective, EncodedPoint, Engine, Field};
+use pairing::{CurveAffine, CurveProjective, EncodedPoint, Engine};
 use rand::distributions::{Distribution, Standard};
 use rand::{rngs::OsRng, Rng, SeedableRng};
 use rand04_compat::RngExt;
 use rand_chacha::ChaChaRng;
 use serde::{Deserialize, Serialize};
 use tiny_keccak::sha3_256;
+
+use pairing::ff::{Field, PrimeField};
 
 use crate::cmp_pairing::cmp_projective;
 use crate::error::{Error, FromBytesError, FromBytesResult, Result};
@@ -43,8 +45,11 @@ use crate::secret::{clear_fr, ContainsSecret, MemRange, FR_SIZE};
 
 pub use crate::into_fr::IntoFr;
 
-#[cfg(not(feature = "use-insecure-test-only-mock-crypto"))]
+#[cfg(feature = "bls12381")]
 pub use pairing::bls12_381::{Bls12 as PEngine, Fr, FrRepr, G1Affine, G2Affine, G1, G2};
+
+#[cfg(feature = "bn256")]
+pub use pairing::bn256::{Bn256 as PEngine, Fr, FrRepr, G1Affine, G2Affine, G1, G2};
 
 #[cfg(feature = "use-insecure-test-only-mock-crypto")]
 mod mock;
@@ -56,12 +61,18 @@ pub use crate::mock::{
 };
 
 /// The size of a key's representation in bytes.
-#[cfg(not(feature = "use-insecure-test-only-mock-crypto"))]
+#[cfg(feature = "bls12381")]
 pub const PK_SIZE: usize = 48;
 
+#[cfg(feature = "bn256")]
+pub const PK_SIZE: usize = 32;
+
 /// The size of a signature's representation in bytes.
-#[cfg(not(feature = "use-insecure-test-only-mock-crypto"))]
+#[cfg(feature = "bls12381")]
 pub const SIG_SIZE: usize = 96;
+
+#[cfg(feature = "bn256")]
+pub const SIG_SIZE: usize = 64;
 
 const ERR_OS_RNG: &str = "could not initialize the OS random number generator";
 
@@ -591,7 +602,7 @@ impl PublicKeySet {
     /// # extern crate rand;
     /// #
     /// # use std::collections::BTreeMap;
-    /// # use threshold_crypto::SecretKeySet;
+    /// # use threshold_crypto_ce::SecretKeySet;
     /// #
     /// let sk_set = SecretKeySet::random(3, &mut rand::thread_rng());
     /// let sk_shares: Vec<_> = (0..6).map(|i| sk_set.secret_key_share(i)).collect();

@@ -1,5 +1,5 @@
 use super::Fr;
-use pairing::{Field, PrimeField};
+use pairing::ff::{Field, PrimeField};
 
 /// A conversion into an element of the field `Fr`.
 pub trait IntoFr: Copy {
