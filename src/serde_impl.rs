@@ -9,6 +9,8 @@ use crate::G1;
 use serde::de::Error as DeserializeError;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
+use pairing::ff::{Field, PrimeField};
+
 use crate::poly::{coeff_pos, BivarCommitment};
 use crate::serde_impl::serialize_secret_internal::SerializeSecret;
 
@@ -85,12 +87,12 @@ impl<'de> Deserialize<'de> for crate::SecretKey {
         D: Deserializer<'de>,
     {
         use crate::{Fr, FrRepr};
-        use pairing::PrimeField;
+        use pairing::ff::PrimeField;
         use serde::de;
 
         let mut fr = match Fr::from_repr(FrRepr(Deserialize::deserialize(deserializer)?)) {
             Ok(x) => x,
-            Err(pairing::PrimeFieldDecodingError::NotInField(_)) => {
+            Err(pairing::ff::PrimeFieldDecodingError::NotInField(_)) => {
                 return Err(de::Error::invalid_value(
                     de::Unexpected::Other(&"Number outside of prime field."),
                     &"Valid prime field element.",
@@ -104,7 +106,7 @@ impl<'de> Deserialize<'de> for crate::SecretKey {
 
 impl SerializeSecret for crate::SecretKey {
     fn serialize_secret<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
-        use pairing::PrimeField;
+        use pairing::ff::PrimeField;
 
         Serialize::serialize(&self.0.into_repr().0, serializer)
     }
@@ -275,7 +277,7 @@ pub(crate) mod projective_vec {
 pub(crate) mod field_vec {
     use std::borrow::Borrow;
 
-    use pairing::PrimeField;
+    use pairing::ff::PrimeField;
     use serde::de::Error as DeserializeError;
     use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
@@ -343,13 +345,18 @@ mod tests {
 
     #[test]
     fn vecs() {
-        let mut rng = rand::thread_rng();
+        let mut rng =  rand::thread_rng();
+        print!("\n rng {:?}", rng);
         let vecs = Vecs {
             curve_points: rng.gen_iter04().take(10).collect(),
             field_elements: rng.gen_iter04().take(10).collect(),
         };
+        print!("\n vecs {:?}", vecs);
         let ser_vecs = bincode::serialize(&vecs).expect("serialize vecs");
+        print!("\n ser_vecs count {:?}", ser_vecs.len());
+        print!("\n ser_vecs {:?}", ser_vecs);
         let de_vecs = bincode::deserialize(&ser_vecs).expect("deserialize vecs");
+        print!("\n de_vecs {:?}", de_vecs);
         assert_eq!(vecs, de_vecs);
     }
 

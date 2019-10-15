@@ -11,9 +11,8 @@ use std::io::{self, Read, Write};
 use std::{fmt, mem, ops};
 
 use byteorder::{BigEndian, ByteOrder};
-use pairing::{
-    Field, LegendreSymbol, PrimeField, PrimeFieldDecodingError, PrimeFieldRepr, SqrtField,
-};
+
+use pairing::ff::{LegendreSymbol, Field, PrimeField, PrimeFieldRepr, PrimeFieldDecodingError, SqrtField};
 use rand04_compat::rand04 as rand;
 
 /// Modular exponentiation
@@ -437,7 +436,7 @@ mod tests {
     #![allow(clippy::cognitive_complexity)]
 
     use super::{ext_euclid, modular_pow, Mersenne8};
-    use pairing::Field;
+    use pairing::ff::Field;
 
     #[test]
     fn ext_euclid_simple() {

@@ -23,7 +23,8 @@ use std::hash::{Hash, Hasher};
 use std::mem::size_of_val;
 use std::{cmp, iter, ops};
 
-use pairing::{CurveAffine, CurveProjective, Field};
+use pairing::ff::Field;
+use pairing::{CurveAffine, CurveProjective};
 use rand::Rng;
 use rand04_compat::RngExt;
 use serde::{Deserialize, Serialize};
@@ -771,7 +772,8 @@ mod tests {
     use super::{coeff_pos, BivarPoly, IntoFr, Poly};
 
     use super::{Fr, G1Affine};
-    use pairing::{CurveAffine, Field};
+    use pairing::ff::Field;
+    use pairing::CurveAffine;
     use rand;
 
     #[test]
