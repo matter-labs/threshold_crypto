@@ -2,7 +2,7 @@
 
 Now published as `threshold_crypto_ce` to `crates.io` for users convenience.
 
-Originally developed by ZCash, with extensions from us to support 256-bit Barreto-Naehrig curve and make this library a little more pleasant. 
+Originally developed by [POA](https://github.com/poanetwork/threshold_crypto), with extensions from us to support 256-bit Barreto-Naehrig curve and make this library a little more pleasant. 
 
 This is a Rust crate for using pairing-friendly elliptic curves. Currently, only the [BLS12-381](https://z.cash/blog/new-snark-curve.html) and BN256 curves are implemented.
 
