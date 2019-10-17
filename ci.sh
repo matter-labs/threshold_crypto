@@ -19,5 +19,5 @@ cargo test --features bls12381 --release
 cargo test --features use-insecure-test-only-mock-crypto --release
 cargo doc --features bn256
 cargo doc --features bls12381
-cargo deadlinks --dir target/doc/threshold_crypto_ce/
+# cargo deadlinks --dir target/doc/threshold_crypto_ce/
 cargo audit
