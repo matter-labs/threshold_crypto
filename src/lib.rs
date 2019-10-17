@@ -36,7 +36,7 @@ use rand_chacha::ChaChaRng;
 use serde::{Deserialize, Serialize};
 use tiny_keccak::sha3_256;
 
-use pairing::ff::{Field, PrimeField};
+use pairing::ff::Field;
 
 use crate::cmp_pairing::cmp_projective;
 use crate::error::{Error, FromBytesError, FromBytesResult, Result};
@@ -60,18 +60,20 @@ pub use crate::mock::{
     Ms8Affine as G2Affine, Ms8Projective as G1, Ms8Projective as G2, PK_SIZE, SIG_SIZE,
 };
 
-/// The size of a key's representation in bytes.
 #[cfg(feature = "bls12381")]
+/// The size of a key's representation in bytes for BLS12-381 curve.
 pub const PK_SIZE: usize = 48;
 
 #[cfg(feature = "bn256")]
+/// The size of a key's representation in bytes for BN256 curve.
 pub const PK_SIZE: usize = 32;
 
-/// The size of a signature's representation in bytes.
 #[cfg(feature = "bls12381")]
+/// The size of a signature's representation in bytes for BLS12-381 curve.
 pub const SIG_SIZE: usize = 96;
 
 #[cfg(feature = "bn256")]
+/// The size of a signature's representation in bytes for BN256 curve.
 pub const SIG_SIZE: usize = 64;
 
 const ERR_OS_RNG: &str = "could not initialize the OS random number generator";

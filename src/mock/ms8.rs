@@ -12,7 +12,9 @@ use std::{fmt, mem, ops};
 
 use byteorder::{BigEndian, ByteOrder};
 
-use pairing::ff::{LegendreSymbol, Field, PrimeField, PrimeFieldRepr, PrimeFieldDecodingError, SqrtField};
+use pairing::ff::{
+    Field, LegendreSymbol, PrimeField, PrimeFieldDecodingError, PrimeFieldRepr, SqrtField,
+};
 use rand04_compat::rand04 as rand;
 
 /// Modular exponentiation

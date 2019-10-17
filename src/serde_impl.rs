@@ -9,8 +9,6 @@ use crate::G1;
 use serde::de::Error as DeserializeError;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
-use pairing::ff::{Field, PrimeField};
-
 use crate::poly::{coeff_pos, BivarCommitment};
 use crate::serde_impl::serialize_secret_internal::SerializeSecret;
 
@@ -345,7 +343,7 @@ mod tests {
 
     #[test]
     fn vecs() {
-        let mut rng =  rand::thread_rng();
+        let mut rng = rand::thread_rng();
         print!("\n rng {:?}", rng);
         let vecs = Vecs {
             curve_points: rng.gen_iter04().take(10).collect(),
