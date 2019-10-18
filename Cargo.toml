@@ -23,6 +23,7 @@ edition = "2018"
 
 include = [
     ".gitignore",
+    "src/*.rs",
     "src/bls12/*.rs",
     "src/bn256/*.rs",
     "COPYRIGHT",
