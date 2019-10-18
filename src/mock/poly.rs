@@ -29,11 +29,11 @@ use rand::Rng;
 use rand04_compat::RngExt;
 use serde::{Deserialize, Serialize};
 
-use crate::cmp_pairing::cmp_projective;
-use crate::error::{Error, Result};
-use crate::into_fr::IntoFr;
-use crate::secret::{clear_fr, ContainsSecret, MemRange, Safe};
-use crate::{Fr, G1Affine, G1};
+use super::cmp_pairing::cmp_projective;
+use super::super::error::{Error, Result};
+use super::into_fr::IntoFr;
+use super::secret::{clear_fr, ContainsSecret, MemRange, Safe};
+use super::{Fr, G1Affine, G1};
 
 /// A univariate polynomial in the prime field.
 #[derive(Serialize, Deserialize, PartialEq, Eq)]

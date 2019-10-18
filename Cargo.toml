@@ -21,6 +21,12 @@ repository = "https://github.com/matter-labs/threshold_crypto"
 description = "Pairing threshold cryptography"
 edition = "2018"
 
+exclude = [
+    "benches",
+    "examples",
+    "src/mock"
+]
+
 [dependencies]
 byteorder = "1.2.7"
 errno = "0.2.4"
@@ -45,6 +51,3 @@ name = "bench"
 harness = false
 
 [features]
-use-insecure-test-only-mock-crypto = []
-bn256 = []
-bls12381 = []

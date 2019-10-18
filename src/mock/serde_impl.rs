@@ -5,12 +5,12 @@ pub use self::field_vec::FieldWrap;
 use std::borrow::Cow;
 use std::ops::Deref;
 
-use crate::G1;
+use super::G1;
 use serde::de::Error as DeserializeError;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
-use crate::poly::{coeff_pos, BivarCommitment};
-use crate::serde_impl::serialize_secret_internal::SerializeSecret;
+use super::poly::{coeff_pos, BivarCommitment};
+use super::serde_impl::serialize_secret_internal::SerializeSecret;
 
 const ERR_DEG: &str = "commitment degree does not match coefficients";
 
@@ -79,12 +79,12 @@ impl<T: SerializeSecret> Serialize for SerdeSecret<T> {
     }
 }
 
-impl<'de> Deserialize<'de> for crate::SecretKey {
+impl<'de> Deserialize<'de> for super::SecretKey {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: Deserializer<'de>,
     {
-        use crate::{Fr, FrRepr};
+        use super::{Fr, FrRepr};
         use pairing::ff::PrimeField;
         use serde::de;
 
@@ -98,11 +98,11 @@ impl<'de> Deserialize<'de> for crate::SecretKey {
             }
         };
 
-        Ok(crate::SecretKey::from_mut(&mut fr))
+        Ok(self::super::SecretKey::from_mut(&mut fr))
     }
 }
 
-impl SerializeSecret for crate::SecretKey {
+impl SerializeSecret for super::SecretKey {
     fn serialize_secret<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         use pairing::ff::PrimeField;
 
@@ -110,18 +110,18 @@ impl SerializeSecret for crate::SecretKey {
     }
 }
 
-impl<'de> Deserialize<'de> for crate::SecretKeyShare {
+impl<'de> Deserialize<'de> for super::SecretKeyShare {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: Deserializer<'de>,
     {
-        Ok(crate::SecretKeyShare(Deserialize::deserialize(
+        Ok(self::super::SecretKeyShare(Deserialize::deserialize(
             deserializer,
         )?))
     }
 }
 
-impl SerializeSecret for crate::SecretKeyShare {
+impl SerializeSecret for super::SecretKeyShare {
     fn serialize_secret<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         self.0.serialize_secret(serializer)
     }
@@ -279,7 +279,7 @@ pub(crate) mod field_vec {
     use serde::de::Error as DeserializeError;
     use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
-    use crate::{Fr, FrRepr};
+    use super::super::{Fr, FrRepr};
 
     /// A wrapper type to facilitate serialization and deserialization of field elements.
     pub struct FieldWrap<B>(pub B);
@@ -324,8 +324,8 @@ mod tests {
     use rand04_compat::RngExt;
     use serde::{Deserialize, Serialize};
 
-    use crate::poly::BivarPoly;
-    use crate::{Fr, G1};
+    use super::poly::BivarPoly;
+    use super::{Fr, G1};
 
     #[derive(Debug, Serialize, Deserialize)]
     pub struct Vecs {
@@ -373,8 +373,8 @@ mod tests {
     #[test]
     #[cfg(not(feature = "use-insecure-test-only-mock-crypto"))]
     fn serde_secret_key() {
-        use crate::serde_impl::SerdeSecret;
-        use crate::SecretKey;
+        use super::serde_impl::SerdeSecret;
+        use super::SecretKey;
         use rand::{thread_rng, Rng};
 
         let mut rng = thread_rng();
@@ -396,8 +396,8 @@ mod tests {
 
     #[test]
     fn serde_secret_key_share() {
-        use crate::serde_impl::SerdeSecret;
-        use crate::SecretKeyShare;
+        use super::serde_impl::SerdeSecret;
+        use super::SecretKeyShare;
         use rand::{thread_rng, Rng};
 
         let mut rng = thread_rng();

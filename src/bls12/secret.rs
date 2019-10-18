@@ -6,7 +6,7 @@ use std::ops::{Deref, DerefMut};
 
 use memsec::memzero;
 
-use crate::Fr;
+use super::Fr;
 
 pub(crate) const FR_SIZE: usize = size_of::<Fr>();
 

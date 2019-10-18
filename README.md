@@ -6,8 +6,6 @@ Originally developed by [POA](https://github.com/poanetwork/threshold_crypto), w
 
 This is a Rust crate for using pairing-friendly elliptic curves. Currently, only the [BLS12-381](https://z.cash/blog/new-snark-curve.html) and BN256 curves are implemented.
 
-Switch curves by providing feature argument: `bn256` or `bls12381`.
-
 ## [Documentation](https://docs.rs/threshold_crypto_ce/)
 
 Bring the `threshold_crypto_ce` crate into your project just as you normally would.

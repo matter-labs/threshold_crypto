@@ -1,11 +1,9 @@
 pub use pairing;
 
-pub mod ms8;
 mod cmp_pairing;
 mod into_fr;
 mod secret;
 
-pub mod mockography;
 pub mod poly;
 pub mod serde_impl;
 
@@ -27,18 +25,21 @@ use tiny_keccak::sha3_256;
 use pairing::ff::Field;
 
 use self::cmp_pairing::cmp_projective;
-use super::error::{Error, FromBytesError, FromBytesResult, Result};
 use self::poly::{Commitment, Poly};
 use self::secret::{clear_fr, ContainsSecret, MemRange, FR_SIZE};
+use super::error::{Error, FromBytesError, FromBytesResult, Result};
 
 pub use self::into_fr::IntoFr;
 
-pub use self::mockography::{
-    Mersenne8 as Fr, Mersenne8 as FrRepr, Mocktography as PEngine, Ms8Affine as G1Affine,
-    Ms8Affine as G2Affine, Ms8Projective as G1, Ms8Projective as G2, PK_SIZE, SIG_SIZE,
-};
+pub use pairing::bls12_381::{Bls12 as PEngine, Fr, FrRepr, G1Affine, G2Affine, G1, G2};
 
 const ERR_OS_RNG: &str = "could not initialize the OS random number generator";
+
+/// The size of a key's representation in bytes for BLS12-381 curve.
+pub const PK_SIZE: usize = 48;
+
+/// The size of a signature's representation in bytes for BLS12-381 curve.
+pub const SIG_SIZE: usize = 96;
 
 /// A public key.
 #[derive(Deserialize, Serialize, Copy, Clone, PartialEq, Eq)]
@@ -566,7 +567,7 @@ impl PublicKeySet {
     /// # extern crate rand;
     /// #
     /// # use std::collections::BTreeMap;
-    /// # use threshold_crypto_ce::SecretKeySet;
+    /// # use threshold_crypto_ce::bls12::SecretKeySet;
     /// #
     /// let sk_set = SecretKeySet::random(3, &mut rand::thread_rng());
     /// let sk_shares: Vec<_> = (0..6).map(|i| sk_set.secret_key_share(i)).collect();
