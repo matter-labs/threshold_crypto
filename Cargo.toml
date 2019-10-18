@@ -21,10 +21,16 @@ repository = "https://github.com/matter-labs/threshold_crypto"
 description = "Pairing threshold cryptography"
 edition = "2018"
 
-exclude = [
-    "benches",
-    "examples",
-    "src/mock"
+include = [
+    ".gitignore",
+    "src/bls12/*.rs",
+    "src/bn256/*.rs",
+    "COPYRIGHT",
+    "LICENSE-MIT",
+    "LICENSE-APACHE",
+    "CONTRIBUTING.md",
+    "CODE_OF_CONDUCT.md",
+    "Cargo.toml"
 ]
 
 [dependencies]
